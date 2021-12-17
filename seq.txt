@@ -25,3 +25,20 @@ seq = ['AACTCAGCGCAGCCGCCGCCCGCGCACGAACGAGCCCAGCA',
        'ACAGGCATAATTGCTGGGATTACAGGCACCTGCCACCATGCCCGGCTAATTTTTGTAGTAGAGA',
        'CGGGGTTTCACCATGTTTGCCAGGCTGGTCCTGCCTTGGCCTC',
        'CCAAAGCGCTGGGATTACAGGCGTGACCACCGTGCCCAGCCACAAGGCTGC']
+       
+       
+       
+### cadena de caracteres: `ATGTTACCCCCCGCTGCAGCG`
+#### `.` = coincide con cualquier caracter: <b style="font-size:1.5vw"><font color = red>ATG.T ⇨ ATGTT</font></b>
+#### `^` = coincide con el inicio de la cadena: <b style="font-size:1.5vw"><font color = red>^ATG.T ⇨ ATGTT</font></b>
+#### `$` = coincide con el final de la cadena; <b style="font-size:1.5vw"><font color = red>GCG$ ⇨ GCG</font></b>
+#### `*` = coincide con cero o más ocurrencias del caracter anterior: <b style="font-size:1.5vw"><font color = red>AC* ⇨ A, ACCCCCC, A</font></b>
+AC* coincidirá con "A", "AC" o "A" seguido de cualquier número de "C".
+#### `+`  = coincide con una o más ocurrencias del último caracter: <b style="font-size:1.5vw"><font color = red>AC+ ⇨ ACCCCCC</font></b>
+#### `{x}` = coincide con exactamente x ocurrencias del patrón: <b style="font-size:1.5vw"><font color = red>(C){3} ⇨ CCC, CCC</font></b>
+#### `{x, y}` = coincide con al menos x y no más de y ocurrencias: <b style="font-size:1.5vw"><font color = red>T{1,2} ⇨ T, TT, T</font></b>
+#### `[]` =  coincide con un conjunto de caracteres: <b style="font-size:1.5vw"><font color = red>[A-Z] ⇨ ATGTTACCCCCCGCTGCAGCG</font></b>
+#### `|` = permite definir opciones para el patrón: <b style="font-size:1.5vw"><font color = red>TT|CG ⇨ TT, CG, CG</font></b>
+
+       
+       
