@@ -26,7 +26,7 @@ seq = ['AACTCAGCGCAGCCGCCGCCCGCGCACGAACGAGCCCAGCA',
        'CGGGGTTTCACCATGTTTGCCAGGCTGGTCCTGCCTTGGCCTC',
        'CCAAAGCGCTGGGATTACAGGCGTGACCACCGTGCCCAGCCACAAGGCTGC']
        
-       
+________________________________________________________________________________________________________________________________________________    
        
 ### cadena de caracteres: `ATGTTACCCCCCGCTGCAGCG`
 #### `.` = coincide con cualquier caracter: <b style="font-size:1.5vw"><font color = red>ATG.T ⇨ ATGTT</font></b>
@@ -40,5 +40,22 @@ AC* coincidirá con "A", "AC" o "A" seguido de cualquier número de "C".
 #### `[]` =  coincide con un conjunto de caracteres: <b style="font-size:1.5vw"><font color = red>[A-Z] ⇨ ATGTTACCCCCCGCTGCAGCG</font></b>
 #### `|` = permite definir opciones para el patrón: <b style="font-size:1.5vw"><font color = red>TT|CG ⇨ TT, CG, CG</font></b>
 
+________________________________________________________________________________________________________________________________________________
        
-       
+la función re
+La función re provee herramientas de expresiones regulares para un procesamiento avanzado de cadenas, manipulación y coincidencias complejas.
+re.sub('patrón/es', 'nuevo', string)
+
+Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y sustituye las coincidencias con un nuevo texto, y devuelve una cadena de caracteres con el texto modificado
+re.search('patrón/es', string)
+
+Busca un patrón desde el principio de la cadena de caracteres y al encontrar la primera conicidencia, regresa un objeto
+re.findall('patrón/es', string)
+
+Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve una lista con todas las coincidencias
+re.finditer('patrón/es', string)
+
+Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve un iterador con todas las coincidencias
+re.split('patrón', string)
+
+Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y separa los elementos utilizando al patrón como separador. Este regresa una lista de cadenas de caracteres con los textos separados por coma ,. En caso de no encontrar coincidencias, regresa un objeto de tipo list con el texto original.  
