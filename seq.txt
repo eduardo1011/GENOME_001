@@ -42,20 +42,19 @@ AC* coincidirá con "A", "AC" o "A" seguido de cualquier número de "C".
 
 ________________________________________________________________________________________________________________________________________________
        
-la función re
-La función re provee herramientas de expresiones regulares para un procesamiento avanzado de cadenas, manipulación y coincidencias complejas.
-re.sub('patrón/es', 'nuevo', string)
+# la función `re`
+### <font color = limegreen>La función `re` provee herramientas de expresiones regulares para un procesamiento avanzado de cadenas, manipulación y coincidencias complejas.</font>
 
-Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y sustituye las coincidencias con un nuevo texto, y devuelve una cadena de caracteres con el texto modificado
-re.search('patrón/es', string)
 
-Busca un patrón desde el principio de la cadena de caracteres y al encontrar la primera conicidencia, regresa un objeto
-re.findall('patrón/es', string)
+## <font color = red>re.sub</font>('`patrón/es`', '`nuevo`', `string`)
+**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y sustituye las coincidencias con un nuevo texto, y devuelve una cadena de caracteres con el texto modificado**
+## <font color = red>re.search</font>('`patrón/es`', `string`)
+**Busca un patrón desde el principio de la cadena de caracteres y al encontrar la primera conicidencia, regresa un objeto**
+## <font color = red>re.findall</font>('`patrón/es`', `string`)
+**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve una lista con todas las coincidencias**
+## <font color = red>re.finditer</font>('`patrón/es`', `string`)
+**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve un iterador con todas las coincidencias**
+## <font color = red>re.split</font>('`patrón`', `string`)
+**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y separa los elementos utilizando al patrón como separador. Este regresa una lista de cadenas de caracteres con los textos separados por coma `,`. En caso de no encontrar coincidencias, regresa un objeto de tipo list con el texto original.**
 
-Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve una lista con todas las coincidencias
-re.finditer('patrón/es', string)
-
-Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve un iterador con todas las coincidencias
-re.split('patrón', string)
-
-Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y separa los elementos utilizando al patrón como separador. Este regresa una lista de cadenas de caracteres con los textos separados por coma ,. En caso de no encontrar coincidencias, regresa un objeto de tipo list con el texto original.  
+---
