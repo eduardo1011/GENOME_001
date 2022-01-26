@@ -1,60 +1,36 @@
-seq = ['AACTCAGCGCAGCCGCCGCCCGCGCACGAACGAGCCCAGCA',
-       'CCGGCCGGATGGAGCGTCCGCAACCCGACAGGCAAGCGCGGGGCGCGGGACGCGGGACCTTTCT',
-       'CTCACACAGCGGAGCCAG',
-       'AAACTTGGGCTCTGGAGTCAGGAGGTGCGGGGTTCTGATCCTGCCTGTGCCCGTAGGGAGGGA',
-       'GGAACGGTAATTTACATGCCTGGCACCCTGGTATGCGGTTGGTGACCAAGATGGGAGTGTCAGAGTA',
-       'TCCAGTCTTTGAGGTAGCCAATTTTTCTGCT',
-       'GAATCTAGATCTCTGGGGCTCTGCCAGCCTGGGGGAGCATGCTTGGTTCTCCTGTCCCTC',
-       'ACTAGCTACGGAGGACCTGAGCCAGACATCACCCTGGCTGCGGTGTTCCATGTCTCACCAGT',
-       'TCAGGGAGGCGACATGCCCAAGAGTGCTCAGTTAGCTGGTGTCAGACCTTGGTCTGC',
-       'CCACCTCCAGGTCTCACTCATTCCCTTCTTTCAATAATTTGTTAGTATTTTTTTTTTTAACTGGGCT',
-       'TAAGACTT',
-       'TGACCAGCTGTGTTGTAGAACAGGGAAGCAGGGCAGGAGAAAAGGGAAAAATGACTGTGGGGAGG',
-       'CAGGGATACGGACCCATGACAGAAATACTCCCAGAAAGACTTTTTCTTTGACTAAAGCAGACTTCTCAG',
-       'GCTTTTTAACCCTGACGCCTTCGATAGGGGGTCATGAGATTTGCATCTGGAACT',
-       'TTAACAAAATAACTGAATTAAAAAGCCAATCAAAGCCG',
-       'GTTCATGGGGCTGCTGCTTCTTCCTGGGTTATGCTGTACCCTCCTCTCCACTGCGAACTACCTGT',
-       'ACCAGGATTTCCCCCTTGGTTTGGGGGACTGTATTATTTAGTGTAATGACTGAAGAGTGTTTACAAA',
-       'GCTGCGAGAGCCACCATGCCCAGCCGAATTTGTTTTGTTTTTTTGTTTTTTTGCTTTTTT',
-       'GCTTTTCTTTTTTTGAGATGGAGTGTTGCTCTGTTGCCCAGGCTGGAGTGCAGTGGCGCGATCTCGGCTC',
-       'ACTGCAACCTCTGCCTCCTGGGTTCAAGCGATTCTCCTGCCTCAGCCTAGTTGGGATTACAGG',
-       'CGCCCACTACCATGCCCGGCTATTTTTTTTTTTTTTTTTGTATTTTTAGTAGAGATAGGGTTTACCATG',
-       'TTGGCCAGGCTGGGCTCAAACTCCTGTCAGCCTCCCAAAGTGCTAGGAT',
-       'TACAGGCGTGAGCCACCTCTCTG',
-       'TCACCAAGTCTGGAGTGCAGTGGTGTGATCTCAGCTCACTGCAACCTCTGCCTCCGTTAAGCAATT',
-       'ACAGGCATAATTGCTGGGATTACAGGCACCTGCCACCATGCCCGGCTAATTTTTGTAGTAGAGA',
-       'CGGGGTTTCACCATGTTTGCCAGGCTGGTCCTGCCTTGGCCTC',
-       'CCAAAGCGCTGGGATTACAGGCGTGACCACCGTGCCCAGCCACAAGGCTGC']
-       
-________________________________________________________________________________________________________________________________________________    
-       
-### cadena de caracteres: `ATGTTACCCCCCGCTGCAGCG`
-#### `.` = coincide con cualquier caracter: <b style="font-size:1.5vw"><font color = red>ATG.T ⇨ ATGTT</font></b>
-#### `^` = coincide con el inicio de la cadena: <b style="font-size:1.5vw"><font color = red>^ATG.T ⇨ ATGTT</font></b>
-#### `$` = coincide con el final de la cadena; <b style="font-size:1.5vw"><font color = red>GCG$ ⇨ GCG</font></b>
-#### `*` = coincide con cero o más ocurrencias del caracter anterior: <b style="font-size:1.5vw"><font color = red>AC* ⇨ A, ACCCCCC, A</font></b>
-AC* coincidirá con "A", "AC" o "A" seguido de cualquier número de "C".
-#### `+`  = coincide con una o más ocurrencias del último caracter: <b style="font-size:1.5vw"><font color = red>AC+ ⇨ ACCCCCC</font></b>
-#### `{x}` = coincide con exactamente x ocurrencias del patrón: <b style="font-size:1.5vw"><font color = red>(C){3} ⇨ CCC, CCC</font></b>
-#### `{x, y}` = coincide con al menos x y no más de y ocurrencias: <b style="font-size:1.5vw"><font color = red>T{1,2} ⇨ T, TT, T</font></b>
-#### `[]` =  coincide con un conjunto de caracteres: <b style="font-size:1.5vw"><font color = red>[A-Z] ⇨ ATGTTACCCCCCGCTGCAGCG</font></b>
-#### `|` = permite definir opciones para el patrón: <b style="font-size:1.5vw"><font color = red>TT|CG ⇨ TT, CG, CG</font></b>
+def blast_data_plot(frame = DataFrame([]), x_title = 'title'):
+    #fig = plt.figure()
+    
+    ax = plt.axes()
 
-________________________________________________________________________________________________________________________________________________
-       
-# la función `re`
-### <font color = limegreen>La función `re` provee herramientas de expresiones regulares para un procesamiento avanzado de cadenas, manipulación y coincidencias complejas.</font>
+    x = (frame.mismatch / frame.length) * 100
+    x1 = (frame.nident / frame.qlen) * 100
+    y = frame.pident
+    
+
+    p = np.poly1d(np.polyfit(x, y, 1))
+    p1 = np.poly1d(np.polyfit(x1, y, 1))
+
+    plt.scatter(x, y, s=5, c='darkblue', alpha=0.7, linewidths =0)
+    plt.scatter(x1, y, s=5, c='darkgreen', alpha=0.7, linewidths =0)
+    
+    
+    plt.text(100, 100, "    R = "+str(np.round(np.corrcoef(x, y)[0,][1], 3)),
+             fontsize = 10, weight="bold", color = 'darkblue')
+    plt.text(100, 90, "    R = "+str(np.round(np.corrcoef(x1, y)[0,][1], 3)),
+             fontsize = 10, weight="bold", color = 'darkgreen')
+    plt.text(100, 80, '  '+str(len(set(frame.Entry.tolist())))+' Proteins',
+             fontsize = 10, weight="bold", color = 'black',
+            horizontalalignment='left')
+
+    plt.plot(x,p(x),"r-", linewidth=1)
+    plt.plot(x1,p1(x1),"r-", linewidth=1)
+
+    #lt.xlabel("Mismatch/Alignment length (%)\nNumber of identical matches/Query length (%)", fontsize = 10, weight="bold")
 
 
-## <font color = red>re.sub</font>('`patrón/es`', '`nuevo`', `string`)
-**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y sustituye las coincidencias con un nuevo texto, y devuelve una cadena de caracteres con el texto modificado**
-## <font color = red>re.search</font>('`patrón/es`', `string`)
-**Busca un patrón desde el principio de la cadena de caracteres y al encontrar la primera conicidencia, regresa un objeto**
-## <font color = red>re.findall</font>('`patrón/es`', `string`)
-**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve una lista con todas las coincidencias**
-## <font color = red>re.finditer</font>('`patrón/es`', `string`)
-**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y devuelve un iterador con todas las coincidencias**
-## <font color = red>re.split</font>('`patrón`', `string`)
-**Busca todas las coincidencias de un patrón desde el principio de la cadena de caracteres y separa los elementos utilizando al patrón como separador. Este regresa una lista de cadenas de caracteres con los textos separados por coma `,`. En caso de no encontrar coincidencias, regresa un objeto de tipo list con el texto original.**
+    plt.ylabel("Identity (%)", fontsize = 10, weight="bold")
+    plt.xlabel(x_title, fontsize = 10, weight="bold")
 
----
+    plt.gca().spines['right'].set_visible(False)
+    plt.gca().spines['top'].set_visible(False)
