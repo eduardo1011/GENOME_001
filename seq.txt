@@ -1,36 +1,26 @@
-def blast_data_plot(frame = DataFrame([]), x_title = 'title'):
-    #fig = plt.figure()
+@interact
+def scatter_plot(x=blast.columns.tolist()[2:], 
+                 y=blast.columns.tolist()[2:],
+                 umbral = widgets.SelectionSlider(options=range(0, 101),value=50,description='pident',
+                                               disabled=False,
+                              continuous_update=False,orientation='horizontal',readout=True),
+                umbral2 = widgets.SelectionSlider(options=sorted(blast.evalue.unique().tolist()),description='evalue',
+                                               disabled=False,
+                              continuous_update=False,orientation='horizontal',readout=True),
+                save = widgets.Checkbox(value=False, description='Save', disabled=False)):
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    plt.subplots(figsize=(4,3))
     
-    ax = plt.axes()
-
-    x = (frame.mismatch / frame.length) * 100
-    x1 = (frame.nident / frame.qlen) * 100
-    y = frame.pident
-    
-
-    p = np.poly1d(np.polyfit(x, y, 1))
-    p1 = np.poly1d(np.polyfit(x1, y, 1))
-
-    plt.scatter(x, y, s=5, c='darkblue', alpha=0.7, linewidths =0)
-    plt.scatter(x1, y, s=5, c='darkgreen', alpha=0.7, linewidths =0)
+    DFx, DFy = blast[blast['pident'] >= umbral], blast[blast['pident'] >= umbral]
+    DFy, DFy = DFx[DFx['evalue'] >= umbral2], DFy[DFy['evalue'] >= umbral2]
     
     
-    plt.text(100, 100, "    R = "+str(np.round(np.corrcoef(x, y)[0,][1], 3)),
-             fontsize = 10, weight="bold", color = 'darkblue')
-    plt.text(100, 90, "    R = "+str(np.round(np.corrcoef(x1, y)[0,][1], 3)),
-             fontsize = 10, weight="bold", color = 'darkgreen')
-    plt.text(100, 80, '  '+str(len(set(frame.Entry.tolist())))+' Proteins',
-             fontsize = 10, weight="bold", color = 'black',
-            horizontalalignment='left')
-
-    plt.plot(x,p(x),"r-", linewidth=1)
-    plt.plot(x1,p1(x1),"r-", linewidth=1)
-
-    #lt.xlabel("Mismatch/Alignment length (%)\nNumber of identical matches/Query length (%)", fontsize = 10, weight="bold")
-
-
-    plt.ylabel("Identity (%)", fontsize = 10, weight="bold")
-    plt.xlabel(x_title, fontsize = 10, weight="bold")
-
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['top'].set_visible(False)
+    X, Y = DFy[x].tolist(), DFy[y].tolist()
+    plt.scatter(X, Y, s = 50, marker = 'o', c = 'red', linewidth=0, edgecolors = 'white',alpha=1)
+    
+    if save == True:
+        plt.savefig('plots/'+x+'_y_'+y+'.png',dpi = 300, bbox_inches='tight')
+    if save == False:
+        pass
+    
+    plt.show()
