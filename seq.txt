@@ -1,17 +1,17 @@
 @interact
-def scatter_plot(x=blast.columns.tolist()[2:], 
-                 y=blast.columns.tolist()[2:],
+def scatter_plot(x=df.columns.tolist()[2:], 
+                 y=df.columns.tolist()[2:],
                  umbral = widgets.SelectionSlider(options=range(0, 101),value=50,description='pident',
                                                disabled=False,
                               continuous_update=False,orientation='horizontal',readout=True),
-                umbral2 = widgets.SelectionSlider(options=sorted(blast.evalue.unique().tolist()),description='evalue',
+                umbral2 = widgets.SelectionSlider(options=sorted(df.evalue.unique().tolist()),description='evalue',
                                                disabled=False,
                               continuous_update=False,orientation='horizontal',readout=True),
                 save = widgets.Checkbox(value=False, description='Save', disabled=False)):
     mpl.rcParams.update(mpl.rcParamsDefault)
     plt.subplots(figsize=(4,3))
     
-    DFx, DFy = blast[blast['pident'] >= umbral], blast[blast['pident'] >= umbral]
+    DFx, DFy = df[df['pident'] >= umbral], df[df['pident'] >= umbral]
     DFy, DFy = DFx[DFx['evalue'] >= umbral2], DFy[DFy['evalue'] >= umbral2]
     
     
@@ -19,7 +19,7 @@ def scatter_plot(x=blast.columns.tolist()[2:],
     plt.scatter(X, Y, s = 50, marker = 'o', c = 'red', linewidth=0, edgecolors = 'white',alpha=1)
     
     if save == True:
-        plt.savefig('plots/'+x+'_y_'+y+'.png',dpi = 300, bbox_inches='tight')
+        plt.savefig(x+'_y_'+y+'.png',dpi = 300, bbox_inches='tight')
     if save == False:
         pass
     
