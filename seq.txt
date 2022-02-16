@@ -1,26 +1,22 @@
-@interact
-def scatter_plot(x=df.columns.tolist()[2:], 
-                 y=df.columns.tolist()[2:],
-                 umbral = widgets.SelectionSlider(options=range(0, 101),value=50,description='pident',
-                                               disabled=False,
-                              continuous_update=False,orientation='horizontal',readout=True),
-                umbral2 = widgets.SelectionSlider(options=sorted(df.evalue.unique().tolist()),description='evalue',
-                                               disabled=False,
-                              continuous_update=False,orientation='horizontal',readout=True),
-                save = widgets.Checkbox(value=False, description='Save', disabled=False)):
-    mpl.rcParams.update(mpl.rcParamsDefault)
-    plt.subplots(figsize=(4,3))
-    
-    DFx, DFy = df[df['pident'] >= umbral], df[df['pident'] >= umbral]
-    DFy, DFy = DFx[DFx['evalue'] >= umbral2], DFy[DFy['evalue'] >= umbral2]
-    
-    
-    X, Y = DFy[x].tolist(), DFy[y].tolist()
-    plt.scatter(X, Y, s = 50, marker = 'o', c = 'red', linewidth=0, edgecolors = 'white',alpha=1)
-    
-    if save == True:
-        plt.savefig(x+'_y_'+y+'.png',dpi = 300, bbox_inches='tight')
-    if save == False:
-        pass
-    
-    plt.show()
+import requests, re
+from pandas import DataFrame
+import pandas as pd
+
+def get_pfam_doms(entry = ''):
+    respuesta = requests.get('http://pfam.xfam.org/protein/'+entry)
+    cero = re.sub('\n| * ', '', str(respuesta.content, 'iso-8859-1'))
+    uno = re.findall('varlayout.*', cero)[0]
+    obj = re.sub('varlayout=[[]', '', uno.split('];')[0])
+    modelos = len(re.findall('modelStart', obj))
+    objeto = json.loads(obj)
+    info = []
+    for i in range(modelos):
+        metadata = objeto['regions'][i]['metadata']
+        info.append([entry, objeto['length'], metadata['accession'], metadata['identifier'], metadata['type'], int(metadata['start']), int(metadata['end']), float(metadata['score']), metadata['database'],
+                     objeto['regions'][i]['colour']])
+    for m in objeto['motifs']:
+        if (m['type'] != 'disorder') & (m['type'] != 'low_complexity') & (m['type'] != 'coiled_coil'):
+            metadata2 =  m['metadata']
+            info.append([entry, objeto['length'], 'n/a', metadata2['type'], metadata2['type'], metadata2['start'], metadata2['end'], 'n/a', metadata2['database'], m['colour']])
+    doms = DataFrame(info, columns = ['entry', 'length', 'accession', 'name', 'type', 'start', 'end', 'evalue', 'database', 'colour'])
+    return doms
