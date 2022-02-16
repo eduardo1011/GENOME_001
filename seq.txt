@@ -20,3 +20,38 @@ def get_pfam_doms(entry = ''):
             info.append([entry, objeto['length'], 'n/a', metadata2['type'], metadata2['type'], metadata2['start'], metadata2['end'], 'n/a', metadata2['database'], m['colour']])
     doms = DataFrame(info, columns = ['entry', 'length', 'accession', 'name', 'type', 'start', 'end', 'evalue', 'database', 'colour'])
     return doms
+
+###########################################################
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.patches as mpatches
+
+fig = plt.figure(figsize=(10, 5))
+ax = fig.add_axes([0, 0, 1, 1])
+
+ax.set_xlim(- dominios.length.min(), dominios.length.max() + (dominios.length.min() * 0.1))
+ax.set_ylim(-0.5, len(dominios.entry.unique()) - 1 + 0.5)
+
+alto = 0.1
+for e, k in enumerate(dominios.entry.unique()):
+    ax.text(0, e, k+' ', ha = 'right', va = 'center', fontsize = 12)
+    df = dominios[dominios.entry == k]
+    j = df.length.unique()[0]
+    prot = patches.Rectangle((0,e-(alto/2)),j, alto,alpha=0.2, linewidth=0,color= 'silver')
+    ax.add_patch(prot)
+    
+    for a, b, c, d in zip(df.name, df.start, df.end, df.colour):
+        dom = patches.FancyBboxPatch((b,e-(alto/2)),c-b, alto,
+                                            boxstyle="round4,pad=0.1",
+                                            linewidth=0,color= d, alpha = 0.6)
+        ax.add_patch(dom)
+        #ax.text(b + ((c-b)/2), e, a, ha = 'center', va = 'center', rotation = 40)
+    
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_yticks([])  
+ax.set_xlabel('\nProtein length', fontsize = 15)
+
+plt.show()
